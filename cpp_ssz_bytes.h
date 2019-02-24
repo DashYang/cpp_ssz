@@ -1,5 +1,5 @@
-#ifndef __CPP_SSZ_UINT_H__
-#define __CPP_SSZ_UINT_H__
+#ifndef __CPP_SSZ_BYTES_H__
+#define __CPP_SSZ_BYTES_H__
 
 #include "cpp_ssz.h"
 #include <stdio.h>
@@ -8,25 +8,25 @@
 using namespace std;
 
 template<unsigned int N>
-class uint 
+class bytes
 {
 protected:
 	unsigned int m_size;
 	byte* m_value;
 public:
-	uint() 
+	bytes() 
 	{ 
-		m_size = N/8;
+		m_size = N;
 		m_value = new byte[m_size];
 		memset(m_value, 0 , m_size); 
 	}
-	uint(const unsigned long long int value) 
+	bytes(const byte* value) 
 	{ 
-		m_size = N/8;
+		m_size = N;
 		m_value = new byte[m_size];
-		memcpy(m_value, &value , m_size); 
+		memcpy(m_value, value , m_size); 
 	}
-	~uint()
+	~bytes()
 	{
 		delete m_value;
 	}
@@ -36,21 +36,21 @@ public:
 
 //Assigned operator
 //pure type
-	uint& operator=(const unsigned long long int value)
+	bytes& operator=(const byte* b)
 	{
-		memcpy(m_value, &value , m_size); 
+		memcpy(m_value, b, m_size); 
 		return *this;
 	}
 
 //self
-	uint& operator=(const uint& value)
+	bytes& operator=(const bytes& b)
 	{
-		memcpy(m_value, value.get_byte() , m_size); 
+		memcpy(m_value, b.get_bytes(), m_size); 
 		return *this;
 	}
 
 //codec section
-	uint* from_bytes(byte* bytes, byteorder bo);
+	bytes* from_bytes(byte* bytes, byteorder bo);
 	byte* to_bytes(unsigned int size, byteorder bo);
 	
 //pretty printer section
@@ -61,18 +61,20 @@ public:
 	}
 };
 
-class uint8 : public uint<8> 
+class bytes4 : public bytes<4> 
 {
 public:
-	uint8() {}
-	uint8(const unsigned long long int val):uint(val){}
+	bytes4() {}
+	bytes4(byte* val):bytes(val){}
+	bytes4(char* val):bytes(reinterpret_cast<byte*>(val)){}
 };
 
-class uint256 : public uint<256> 
+class bytes8 : public bytes<8> 
 {
 public:
-	uint256() {}
-	uint256(const unsigned long long int val):uint(val){}
+	bytes8() {}
+	bytes8(byte* val):bytes(val){}
+	bytes8(char* val):bytes(reinterpret_cast<byte*>(val)){}
 };
 
 
