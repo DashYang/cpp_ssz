@@ -14,6 +14,7 @@ https://github.com/ethereum/eth2.0-specs/blob/master/specs/simple-serialize.md
 uintN
  - assign
  - encode
+
 bytesN
  - assign
  - encode
