@@ -1,4 +1,5 @@
 #include <iostream>
+#include "cpp_ssz_bool.h"
 #include "cpp_ssz_uint.h"
 #include "cpp_ssz_bytes.h"
 using namespace std;
@@ -13,6 +14,12 @@ void print_encoded_hexary(byte* source, int size)
 int main()
 {
 	std::vector<byte> data;
+
+	BOOL myb = true;
+	BOOL myc(false);
+
+	print_encoded_hexary(myb.to_bytes(1, little), 4);
+	print_encoded_hexary(myc.to_bytes(1, little), 4);
 
 	uint8 a(255);
 	uint8 b = 255;
