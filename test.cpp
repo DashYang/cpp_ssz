@@ -1,6 +1,5 @@
 #include <iostream>
-#include "cpp_ssz_uint.h"
-#include "cpp_ssz_bytes.h"
+#include "cpp_ssz.h"
 using namespace std;
 
 void print_encoded_hexary(byte* source, int size)
@@ -12,7 +11,6 @@ void print_encoded_hexary(byte* source, int size)
 
 int main()
 {
-	std::vector<byte> data;
 
 	uint8 a(255);
 	uint8 b = 255;
@@ -50,4 +48,23 @@ int main()
 	enc = e.to_bytes(4, little);
 	print_encoded_hexary(enc, 3+4);
 	delete enc;
+
+
+	cpp_ssz_codec<bool,1> codec;
+	codec.m_type = type_BOOL;
+	codec.m_value = true;
+
+       	enc = codec.to_bytes(1, little);
+	print_encoded_hexary(enc, 3+1);
+	delete enc;
+
+	codec.m_value = false;
+       	enc = codec.to_bytes(1, little);
+	print_encoded_hexary(enc, 3+1);
+	delete enc;
+
+	//std::vector<byte> data;
+
+
+
 }

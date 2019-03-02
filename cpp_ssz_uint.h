@@ -1,10 +1,10 @@
 #ifndef __CPP_SSZ_UINT_H__
 #define __CPP_SSZ_UINT_H__
 
-#include "cpp_ssz.h"
 #include <stdio.h>
 #include <string.h>
 #include <vector>
+#include "cpp_ssz_constant.h"
 using namespace std;
 
 template<unsigned int N>
