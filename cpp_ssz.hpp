@@ -1,5 +1,7 @@
 #include "cpp_ssz.h"
 
+//template body
+
 template <class T, unsigned int N>
 T* cpp_ssz_codec<T,N>::from_bytes(byte* bytes, byteorder bo)
 {
