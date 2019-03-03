@@ -16,17 +16,19 @@ uintN
 bytesN
 
 2. cpp_ssz as a template encoder
+```
 cpp_ssz_codec<bool> codec;
 cpp_ssz_codec<uint8> codec1;
 cpp_ssz_codec<bytes4> codec2;
-
+```
 3. humbly support arrays
+```
 bytes4 list[2] = {"abcd", "efgh"};
 cpp_ssz_codec<bytes4> codec4;
 codec4.m_value = list;
 codec4.m_count = 2;
 byte* enc4 = codec4.to_bytes(list[0].size(),little);
- 
+```
 
 ### Test run result  as of now
 ```
