@@ -37,7 +37,8 @@ int main()
 
 // bytes section
 	bytes4 b = "abcdefgh";
-	cpp_ssz_codec<bytes4,1> codec2(b);
+	cpp_ssz_codec<bytes4,1> codec2;
+	codec2.m_value = b;
 	byte* enc2 = codec2.to_bytes(b.size(), little);
 	print_encoded_hexary(enc2, 3+b.size());
 	//delete enc2;

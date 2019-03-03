@@ -4,7 +4,7 @@ CFLAGS = -W -Wall
 
 TEST_UINT = test_uint
 TEST_BYTES = test_bytes
-TEST_CODEC = test_codec
+TEST_CODEC = test
 TEST_TARGETS = $(TEST_UINT) $(TEST_BYTES) $(TEST_CODEC)
 
 all: $(TEST_TARGETS) 
@@ -17,7 +17,7 @@ $(TEST_UINT): test_uint.o $(SRC_OBJECTS)
 $(TEST_BYTES): test_bytes.o $(SRC_OBJECTS) 
 	$(CC) $(CFLAGS) -o $@ $^
 
-$(TEST_CODEC): test_codec.o $(SRC_OBJECTS) 
+$(TEST_CODEC): test.o $(SRC_OBJECTS) 
 	$(CC) $(CFLAGS) -o $@ $^
 
 .PHONY: clean

@@ -45,7 +45,7 @@ public:
 //self
 	uint& operator=(const uint& value)
 	{
-		memcpy(m_value, value.get_byte() , m_size); 
+		memcpy(m_value, value.get_bytes() , m_size); 
 		return *this;
 	}
 
