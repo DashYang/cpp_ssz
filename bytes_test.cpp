@@ -6,6 +6,7 @@
 #include "Common.h"
 #include "cpp_ssz_bytes.h"
 using namespace std;
+using namespace ssz;
 
 
 //pretty printer section

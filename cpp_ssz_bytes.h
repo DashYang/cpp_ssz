@@ -8,6 +8,8 @@
 
 #include "Common.h"
 
+namespace ssz {
+
 template<unsigned int N>
 class bytesN
 {
@@ -99,4 +101,6 @@ public:
     bytes8(bytes& data):bytesN(data) {}
     bytes8(std::string& data):bytesN(data) {}
 };
+
+}
 #endif
