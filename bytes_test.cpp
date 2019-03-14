@@ -1,3 +1,8 @@
+/*
+	This file is part of cpp_ssz.
+    @author SigmoiD <alphabet@hotmail.co.kr>
+*/ 
+
 #include "Common.h"
 #include "cpp_ssz_bytes.h"
 using namespace std;
