@@ -15,10 +15,24 @@
 namespace ssz {
 
 const unsigned int LENGTH_BYTES = 4;
-const unsigned int  SSZ_CHUNK_SIZE = 128;
+const unsigned int SSZ_CHUNK_SIZE = 128;
 
 enum byteorder {
 	little,
+};
+
+enum cpp_ssz_types_enum {
+	type_BOOL,
+	type_UINT,
+	type_BYTES,
+	type_LIST,
+	type_CONTAINER,
+};
+
+class cpp_ssz_types 
+{
+    cpp_ssz_types_enum my_type;
+    cpp_ssz_types_enum container_list[2];
 };
 
 using byte = uint8_t;

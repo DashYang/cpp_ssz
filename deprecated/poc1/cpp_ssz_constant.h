@@ -11,12 +11,8 @@ enum byteorder {
 
 enum cpp_ssz_types {
 	type_BOOL,
-	type_UINT8,
-	type_UINT24,
-	type_BYTES4,
-	type_BYTES8,
-	type_LIST,
-	type_CONTAINER,
+	type_UINT,
+	type_BYTES,
 };
 
 #endif

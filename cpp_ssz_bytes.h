@@ -11,7 +11,7 @@
 namespace ssz {
 
 template<unsigned int N>
-class bytesN
+class bytesN : public cpp_ssz_types
 {
 protected:
 	unsigned int m_size;

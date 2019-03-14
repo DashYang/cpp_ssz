@@ -10,18 +10,25 @@
 
 namespace ssz {
 
+struct key_value {
+    cpp_ssz_types* key;
+    cpp_ssz_types* value;
+};
+
 template<class T>
-class List: public cpp_ssz_types
+class Container: public cpp_ssz_types
 {
 protected:
 	unsigned int m_size;
+	std::vector<key_value> m_pdata;
 	std::vector<T> m_data;
 public:
-	List() 
+	Container() 
 	{ 
+        my_type = type_CONTAINER;
 	}
 
-	~List()
+	~Container()
 	{
 		m_data.empty();
 	}
@@ -42,7 +49,7 @@ public:
 };
 
 template<class T>
-void List<T>::from_bytes(const bytes& data, byteorder bo)
+void container<T>::from_bytes(const bytes& data, byteorder bo)
 {
 /*
 	int prefix = 0;
@@ -57,7 +64,7 @@ void List<T>::from_bytes(const bytes& data, byteorder bo)
 }
 
 template<class T>
-bytes List<T>::to_bytes(unsigned int size, byteorder bo)
+bytes container::to_bytes(unsigned int size, byteorder bo)
 {
 
     bytes temp1;
