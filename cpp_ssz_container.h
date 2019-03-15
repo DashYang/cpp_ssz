@@ -3,29 +3,22 @@
     @author SigmoiD <alphabet@hotmail.co.kr>
 */ 
 
-#ifndef __CPP_SSZ_LIST_H__
-#define __CPP_SSZ_LIST_H__
+#ifndef __CPP_SSZ_CONTAINER_H__
+#define __CPP_SSZ_CONTAINER_H__
 
 #include "Common.h"
 
 namespace ssz {
 
-struct key_value {
-    cpp_ssz_types* key;
-    cpp_ssz_types* value;
-};
-
-template<class T>
+template<class K, class V>
 class Container: public cpp_ssz_types
 {
 protected:
 	unsigned int m_size;
-	std::vector<key_value> m_pdata;
-	std::vector<T> m_data;
+    std::vector<std::pair<K, V>> m_data;
 public:
 	Container() 
 	{ 
-        my_type = type_CONTAINER;
 	}
 
 	~Container()
@@ -34,13 +27,14 @@ public:
 	}
 
 	unsigned int size() const { return m_data.size(); }
-	std::vector<T>& data() { return m_data; }
+    std::vector<std::pair<K, V>>& data() { return m_data; }
 
 // encode/decode section
     void from_bytes(const bytes& data, byteorder bo);
 	bytes to_bytes(unsigned int size, byteorder bo);
+
+    // operators
 /*
-// operators
 	bool operator==(const bytesN<N>& b)
 	{
 	     return this->m_data == b.get_data_array();
@@ -48,8 +42,9 @@ public:
 */
 };
 
-template<class T>
-void container<T>::from_bytes(const bytes& data, byteorder bo)
+
+template<class K, class V>
+void Container<K, V>::from_bytes(const bytes& data, byteorder bo)
 {
 /*
 	int prefix = 0;
@@ -63,14 +58,16 @@ void container<T>::from_bytes(const bytes& data, byteorder bo)
 */
 }
 
-template<class T>
-bytes container::to_bytes(unsigned int size, byteorder bo)
+template<class K, class V>
+bytes Container<K, V>::to_bytes(unsigned int size, byteorder bo)
 {
 
     bytes temp1;
     for (unsigned i=0; i < m_data.size(); i++) {
-        bytes t = m_data[i].to_bytes(m_data[i].size(), little);
-        temp1.insert(temp1.end(), t.begin(), t.end()); 
+        bytes t1 = m_data[i].first.to_bytes(m_data[i].first.size(), little);
+        temp1.insert(temp1.end(), t1.begin(), t1.end()); 
+        bytes t2 = m_data[i].second.to_bytes(m_data[i].second.size(), little);
+        temp1.insert(temp1.end(), t2.begin(), t2.end()); 
     }
 
 	int prefix = 8388608 + temp1.size();

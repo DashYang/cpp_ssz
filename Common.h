@@ -8,8 +8,9 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <assert.h>
-#include <sstream>
+//#include <sstream>
 #include <boost/multiprecision/cpp_int.hpp>
 
 namespace ssz {
@@ -29,15 +30,18 @@ enum cpp_ssz_types_enum {
 	type_CONTAINER,
 };
 
-class cpp_ssz_types 
-{
-    cpp_ssz_types_enum my_type;
-    cpp_ssz_types_enum container_list[2];
-};
-
 using byte = uint8_t;
 using bytes = std::vector<byte>;
 using u256 =  boost::multiprecision::number<boost::multiprecision::cpp_int_backend<256, 256, boost::multiprecision::unsigned_magnitude, boost::multiprecision::unchecked, void>>;
+
+class cpp_ssz_types 
+{
+public:
+    cpp_ssz_types_enum my_type;
+    cpp_ssz_types_enum container_list[2];
+    virtual void from_bytes(const bytes& data, byteorder bo) = 0;
+	virtual bytes to_bytes(unsigned int size, byteorder bo) = 0;
+};
 
 }
 

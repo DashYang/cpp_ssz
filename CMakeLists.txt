@@ -1,3 +1,4 @@
-ADD_EXECUTABLE(bytesN_test bytes_test.cpp)
-ADD_EXECUTABLE(uintN_test uint_test.cpp)
-ADD_EXECUTABLE(list_test list_test.cpp)
+ADD_EXECUTABLE(test_bytesN test_bytes.cpp)
+ADD_EXECUTABLE(test_uintN  test_uint.cpp)
+ADD_EXECUTABLE(test_list   test_list.cpp)
+ADD_EXECUTABLE(test_container   test_container.cpp)
