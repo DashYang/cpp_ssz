@@ -61,24 +61,44 @@ public:
 template<unsigned int N>
 void uintN<N>::from_bytes(const bytes& data, byteorder bo)
 {
-    //assert(data.size() >= m_size+3);
 	int prefix = 0;
-    prefix |= data[0] << 16;
-	prefix |= data[1] << 8;
-	prefix |= data[2] << 0;
-    prefix -= 8388608;
+    assert(data.size() >= (N/8+LENGTH_BYTES));
+
+    if(bo == little) {
+        prefix |= data[3] << 24;
+        prefix |= data[2] << 16;
+        prefix |= data[1] << 8;
+        prefix |= data[0] << 0;
+    }
+    else {
+        prefix |= data[0] << 24;
+        prefix |= data[1] << 16;
+        prefix |= data[2] << 8;
+        prefix |= data[3] << 0;
+    }
+    prefix -= SSZ_PREFIX;
+
     for(int i=0; i< prefix; i++)
-        m_data.push_back(data[3+i]);
+        m_data.push_back(data[LENGTH_BYTES+i]);
 }
 
 template<unsigned int N>
 bytes uintN<N>::to_bytes(unsigned int size, byteorder bo)
 {
-	int prefix = 8388608 + m_size;
+	unsigned int prefix = SSZ_PREFIX + m_size;
     bytes temp;
-    temp.push_back((prefix & 0x00ff0000) >> 16);
-	temp.push_back((prefix >> 8) & 0xff);
-	temp.push_back((prefix >> 0) & 0xff);
+    if(bo == little) {
+        temp.push_back((prefix >> 0) & 0xff);
+        temp.push_back((prefix >> 8) & 0xff);
+        temp.push_back((prefix >> 16)& 0xff);
+        temp.push_back((prefix >> 24)& 0xff);
+    }
+    else {
+        temp.push_back((prefix >> 24)& 0xff);
+        temp.push_back((prefix >> 16)& 0xff);
+        temp.push_back((prefix >> 8) & 0xff);
+        temp.push_back((prefix >> 0) & 0xff);
+    }
     temp.insert(temp.end(), m_data.begin(), m_data.end());
 	return bytes(temp); 
 }
@@ -92,7 +112,7 @@ public:
     uint256(const std::string& data):uintN(data) {}
 };
 
-}
+}//namespace
 #endif
 
 

@@ -9,7 +9,6 @@
 #include "Common.h"
 
 namespace ssz {
-
 template<class T>
 class List: public cpp_ssz_types
 {
@@ -66,16 +65,22 @@ bytes List<T>::to_bytes(unsigned int size, byteorder bo)
         temp1.insert(temp1.end(), t.begin(), t.end()); 
     }
 
-	int prefix = 8388608 + temp1.size();
+	unsigned int prefix = SSZ_PREFIX + temp1.size();
     bytes temp;
-    temp.push_back((prefix & 0x00ff0000) >> 16);
-	temp.push_back((prefix >> 8) & 0xff);
-	temp.push_back((prefix >> 0) & 0xff);
+    if(bo == little) {
+        temp.push_back((prefix >> 0) & 0xff);
+        temp.push_back((prefix >> 8) & 0xff);
+        temp.push_back((prefix >> 16)& 0xff);
+        temp.push_back((prefix >> 24)& 0xff);
+    }
+    else {
+        temp.push_back((prefix >> 24)& 0xff);
+        temp.push_back((prefix >> 16)& 0xff);
+        temp.push_back((prefix >> 8) & 0xff);
+        temp.push_back((prefix >> 0) & 0xff);
+    }
     temp.insert(temp.end(), temp1.begin(), temp1.end());
 	return bytes(temp); 
 }
-
-
-
-}
+}//namespace
 #endif

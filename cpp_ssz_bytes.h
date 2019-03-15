@@ -9,7 +9,6 @@
 #include "Common.h"
 
 namespace ssz {
-
 template<unsigned int N>
 class bytesN : public cpp_ssz_types
 {
@@ -70,25 +69,43 @@ template<unsigned int N>
 void bytesN<N>::from_bytes(const bytes& data, byteorder bo)
 {
 	int prefix = 0;
-    assert(data.size() >= N+3);
+    assert(data.size() >= (N+LENGTH_BYTES));
 
-    prefix |= data[0] << 16;
-	prefix |= data[1] << 8;
-	prefix |= data[2] << 0;
-    prefix -= 8388608;
+    if(bo == little) {
+        prefix |= data[3] << 24;
+        prefix |= data[2] << 16;
+        prefix |= data[1] << 8;
+        prefix |= data[0] << 0;
+    }
+    else {
+        prefix |= data[0] << 24;
+        prefix |= data[1] << 16;
+        prefix |= data[2] << 8;
+        prefix |= data[3] << 0;
+    }
+    prefix -= SSZ_PREFIX;
 
     for(int i=0; i< prefix; i++)
-        m_data[i] = data[3+i];
+        m_data[i] = data[LENGTH_BYTES+i];
 }
 
 template<unsigned int N>
 bytes bytesN<N>::to_bytes(unsigned int size, byteorder bo)
 {
-	int prefix = 8388608 + m_size;
+	unsigned int prefix = SSZ_PREFIX + m_size;
     bytes temp;
-    temp.push_back((prefix & 0x00ff0000) >> 16);
-	temp.push_back((prefix >> 8) & 0xff);
-	temp.push_back((prefix >> 0) & 0xff);
+    if(bo == little) {
+        temp.push_back((prefix >> 0) & 0xff);
+        temp.push_back((prefix >> 8) & 0xff);
+        temp.push_back((prefix >> 16)& 0xff);
+        temp.push_back((prefix >> 24)& 0xff);
+    }
+    else {
+        temp.push_back((prefix >> 24)& 0xff);
+        temp.push_back((prefix >> 16)& 0xff);
+        temp.push_back((prefix >> 8) & 0xff);
+        temp.push_back((prefix >> 0) & 0xff);
+    }
     temp.insert(temp.end(), m_data.begin(), m_data.end());
 	return bytes(temp); 
 }
@@ -101,6 +118,5 @@ public:
     bytes8(bytes& data):bytesN(data) {}
     bytes8(std::string& data):bytesN(data) {}
 };
-
-}
+}//namespace
 #endif

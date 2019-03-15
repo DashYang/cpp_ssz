@@ -17,6 +17,8 @@ namespace ssz {
 
 const unsigned int LENGTH_BYTES = 4;
 const unsigned int SSZ_CHUNK_SIZE = 128;
+//const unsigned int SSZ_PREFIX = 8388608;
+const unsigned int SSZ_PREFIX = 0;
 
 enum byteorder {
 	little,
