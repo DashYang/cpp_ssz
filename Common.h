@@ -39,8 +39,8 @@ using u256 =  boost::multiprecision::number<boost::multiprecision::cpp_int_backe
 class cpp_ssz_types 
 {
 public:
-    cpp_ssz_types_enum my_type;
-    cpp_ssz_types_enum container_list[2];
+//    cpp_ssz_types_enum my_type;
+//    cpp_ssz_types_enum container_list[2];
     virtual void from_bytes(const bytes& data, byteorder bo) = 0;
 	virtual bytes to_bytes(unsigned int size, byteorder bo) = 0;
 };

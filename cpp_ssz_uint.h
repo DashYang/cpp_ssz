@@ -7,6 +7,7 @@
 #define __CPP_SSZ_UINT_H__
 
 #include "Common.h"
+#include <iostream>
 
 namespace ssz {
 
@@ -23,15 +24,16 @@ public:
 		m_size = N / 8;
 	}
 
-	uintN(const std::string& data) 
+	uintN(const std::string& a) 
 	{ 
         assert(!(N % 8));
 		m_size = N / 8;
-        unsigned int i = 0;
-        if (data.size() >= 2 && data.substr(0, 2) == "0x")
-            i = 2;
 
-        for (; i < data.length(); i += 2) {
+        std::string data = a;
+        if (data.size() >= 2 && data.substr(0, 2) == "0x")
+            data = data.substr(2, data.size()-2);
+
+        for (int i = 0; i < data.length(); i += 2) {
             std::string byteString = data.substr(i, 2);
             char byte = (char) strtol(byteString.c_str(), NULL, 16);
             m_data.push_back(byte);
@@ -61,53 +63,73 @@ public:
 template<unsigned int N>
 void uintN<N>::from_bytes(const bytes& data, byteorder bo)
 {
-	int prefix = 0;
-    assert(data.size() >= (N/8+LENGTH_BYTES));
-
+    assert(data.size() == (N/8));
     if(bo == little) {
-        prefix |= data[3] << 24;
-        prefix |= data[2] << 16;
-        prefix |= data[1] << 8;
-        prefix |= data[0] << 0;
+        for(int i=N/8 -1; i >= 0 ; i--)
+            m_data.push_back(data[i]);
     }
     else {
-        prefix |= data[0] << 24;
-        prefix |= data[1] << 16;
-        prefix |= data[2] << 8;
-        prefix |= data[3] << 0;
+        for(int i=0; i< N/8; i++)
+            m_data.push_back(data[i]);
     }
-    prefix -= SSZ_PREFIX;
-
-    for(int i=0; i< prefix; i++)
-        m_data.push_back(data[LENGTH_BYTES+i]);
 }
 
 template<unsigned int N>
 bytes uintN<N>::to_bytes(unsigned int size, byteorder bo)
 {
-	unsigned int prefix = SSZ_PREFIX + m_size;
     bytes temp;
     if(bo == little) {
-        temp.push_back((prefix >> 0) & 0xff);
-        temp.push_back((prefix >> 8) & 0xff);
-        temp.push_back((prefix >> 16)& 0xff);
-        temp.push_back((prefix >> 24)& 0xff);
+        for(int i=N/8 -1; i >= 0 ; i--)
+            temp.push_back(m_data[i]);
     }
-    else {
-        temp.push_back((prefix >> 24)& 0xff);
-        temp.push_back((prefix >> 16)& 0xff);
-        temp.push_back((prefix >> 8) & 0xff);
-        temp.push_back((prefix >> 0) & 0xff);
+    else { 
+        for(int i=0; i< N/8; i++)
+            temp.push_back(m_data[i]);
     }
-    temp.insert(temp.end(), m_data.begin(), m_data.end());
 	return bytes(temp); 
 }
 
 
+//Shorten types
+class uint8 : public uintN<8> 
+{
+public:
+    uint8() {}
+    uint8(const std::string& data):uintN(data) {}
+};
+
+class uint16 : public uintN<16> 
+{
+public:
+    uint16() {}
+    uint16(const std::string& data):uintN(data) {}
+};
+
+
+class uint32 : public uintN<32> 
+{
+public:
+    uint32() {}
+    uint32(const std::string& data):uintN(data) {}
+};
+
+class uint64 : public uintN<64> 
+{
+public:
+    uint64() {}
+    uint64(const std::string& data):uintN(data) {}
+};
+
+class uint128 : public uintN<128> 
+{
+public:
+    uint128() {}
+    uint128(const std::string& data):uintN(data) {}
+};
+
 class uint256 : public uintN<256> 
 {
 public:
-    typedef boost::multiprecision::number<boost::multiprecision::cpp_int_backend<256, 256, boost::multiprecision::unsigned_magnitude, boost::multiprecision::unchecked, void>> uint_data;
     uint256() {}
     uint256(const std::string& data):uintN(data) {}
 };
