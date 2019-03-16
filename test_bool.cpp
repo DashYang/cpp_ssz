@@ -19,6 +19,16 @@ void print_hex(const bytes& a) {
 
 int main()
 {
+/*
+@pytest.mark.parametrize(
+    'value,expected',
+    (
+        (True, b'\x01'),
+        (False, b'\x00'),
+    ),
+)
+*/
+
     {
         Bool testval(true);
         bytes enc = testval.to_bytes(1,little);
