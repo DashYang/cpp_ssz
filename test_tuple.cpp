@@ -21,6 +21,7 @@ void print_hex(const bytes& a) {
 
 int main()
 {
+/*
 // initial values  
     uint256 testval1("0x1111111111111111111111111111111111111111111111111111111111111111");
     uint256 testval2("0x2222222222222222222222222222222222222222222222222222222222222222");
@@ -32,6 +33,6 @@ int main()
 
     bytes enc = a.to_bytes(0, little);
     print_hex(enc);
-    
+ */   
 }
 

@@ -22,6 +22,7 @@ void print_hex(const bytes& a) {
 
 int main()
 {
+/*
     uint256 testval1("0x1111111111111111111111111111111111111111111111111111111111111111");
     string s_over = "abcdefghijk";
     bytes b_over(s_over.begin(), s_over.end());
@@ -30,5 +31,6 @@ int main()
     a.data().push_back(std::make_pair(bytes8(b_over),testval1));
     bytes enc = a.to_bytes(0, little);
     print_hex(enc);
+*/
 }
 

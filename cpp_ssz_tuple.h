@@ -10,7 +10,7 @@
 
 namespace ssz {
 template<class T, unsigned int N>
-class Tuple: public cpp_ssz_types
+class Tuple
 {
 protected:
 	unsigned int m_size;
@@ -30,7 +30,7 @@ public:
 	const std::array<T, N>& get_data_array() const { return m_data; }
 
 // encode/decode section
-    void from_bytes(const bytes& data, byteorder bo);
+    void from_bytes(bytes& data, byteorder bo);
 	bytes to_bytes(unsigned int size, byteorder bo);
 /*
 // operators
@@ -45,7 +45,7 @@ public:
 };
 
 template<class T, unsigned int N>
-void Tuple<T, N>::from_bytes(const bytes& data, byteorder bo)
+void Tuple<T, N>::from_bytes(bytes& data, byteorder bo)
 {
 /*
 	int prefix = 0;
@@ -63,7 +63,7 @@ template<class T, unsigned int N>
 bytes Tuple<T, N>::to_bytes(unsigned int size, byteorder bo)
 {
 
-    bytes temp;
+    std::vector<byte> temp;
     for (unsigned int i=0; i < N; i++) {
         bytes t = m_data[i].to_bytes(m_data[i].size(), little);
         temp.insert(temp.end(), t.begin(), t.end()); 

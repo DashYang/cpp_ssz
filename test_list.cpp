@@ -21,6 +21,8 @@ void print_hex(const bytes& a) {
 
 int main()
 {
+
+/*
     List<bytes8> a;
 // initial values  
     string s_over = "abcdefghijk";
@@ -49,6 +51,7 @@ int main()
 
     bytes enc1 = b.to_bytes(0, little);
     print_hex(enc1);
+*/
     
 }
 

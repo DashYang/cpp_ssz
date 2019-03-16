@@ -11,11 +11,19 @@ https://github.com/ethereum/eth2.0-specs/blob/master/specs/simple-serialize.md
 4. make
 
 ### Run tests
-test_bytesN  
+test_bool  
 test_uintN
-test_list  
+test_bytesN  
+test_tuple  
 test_container  
+test_list  
 
+### bool Usage
+```
+        Bool testval(true);
+        bytes enc = testval.to_bytes(1,little);
+        print_hex(enc);
+```
 ### bytesN Usage
 ```
 //fixed length type
@@ -49,8 +57,22 @@ test_container
     ...
 ```
 
+### tuple Usage
+```
+//tuple: ordered fixed-length homogeneous collection of values
+//[type, N]
+    Tuple<uint256, 3> a;
+    a[0] = testval1;
+    a[1] = testval2;
+    a[2] = testval3;
+
+    bytes enc = a.to_bytes(0, little);
+```
+
 ### list Usage
 ```
+//list: ordered variable-length homogenous collection of values
+//[type]
     List<bytes8> a;
     a.data().push_back(bytes8(b_over));
     a.data().push_back(bytes8(b_fit));
@@ -66,6 +88,7 @@ test_container
 
 ### container Usage
 ```
+//container: ordered heterogenous collection of values
     Container<bytes8,uint256> a; 
     a.data().push_back(std::make_pair(bytes8(b_over),testval1));
     bytes enc = a.to_bytes(0, little);

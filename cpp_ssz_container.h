@@ -10,7 +10,7 @@
 
 namespace ssz {
 template<class K, class V>
-class Container: public cpp_ssz_types
+class Container
 {
 protected:
 	unsigned int m_size;
@@ -29,7 +29,7 @@ public:
     std::vector<std::pair<K, V>>& data() { return m_data; }
 
 // encode/decode section
-    void from_bytes(const bytes& data, byteorder bo);
+    void from_bytes(bytes& data, byteorder bo);
 	bytes to_bytes(unsigned int size, byteorder bo);
 
     // operators
@@ -43,7 +43,7 @@ public:
 
 
 template<class K, class V>
-void Container<K, V>::from_bytes(const bytes& data, byteorder bo)
+void Container<K, V>::from_bytes(bytes& data, byteorder bo)
 {
 /*
 	int prefix = 0;
@@ -61,7 +61,7 @@ template<class K, class V>
 bytes Container<K, V>::to_bytes(unsigned int size, byteorder bo)
 {
 
-    bytes temp1;
+    std::vector<byte> temp1;
     for (unsigned i=0; i < m_data.size(); i++) {
         bytes t1 = m_data[i].first.to_bytes(m_data[i].first.size(), little);
         temp1.insert(temp1.end(), t1.begin(), t1.end()); 
@@ -69,8 +69,8 @@ bytes Container<K, V>::to_bytes(unsigned int size, byteorder bo)
         temp1.insert(temp1.end(), t2.begin(), t2.end()); 
     }
 
-	unsigned int prefix = SSZ_PREFIX + temp1.size();
-    bytes temp;
+	unsigned int prefix = temp1.size();
+    std::vector<byte> temp;
     if(bo == little) {
         temp.push_back((prefix >> 0) & 0xff);
         temp.push_back((prefix >> 8) & 0xff);

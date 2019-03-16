@@ -16,90 +16,56 @@ void print_hex(const bytes& a) {
 		printf("\n");
 }
 
-#define CHECK_SUCESS(a,b){ a==b ? cout << "\033[1;32mSUCCESS\033[0m\n": cout << "\033[1;31mFAIL\033[0m\n;";}
+#define CHECK_SUCESS(testname, a,b){ cout<< testname << " "; a==b ? cout << "\033[1;32mSUCCESS\033[0m\n": cout << "\033[1;31mFAIL\033[0m\n";}
 
 int main()
 {
-// initial values  
-    string s_over = "abcdefghijk";
-    string s_fit = "abcdefgh";
-    string s_under = "abcde";
+/*
+        (b"", b'\x00\x00\x00\x00'),
+        (b"I", b'\x01\x00\x00\x00I'),
+        (b"foo", b'\x03\x00\x00\x00foo'),
+        (b"hello", b'\x05\x00\x00\x00hello'),
+*/
 
-    bytes b_over(s_over.begin(), s_over.end());
-    bytes b_fit(s_fit.begin(), s_fit.end());
-    bytes b_under(s_under.begin(), s_under.end());
-
-// byte8
+// bytes
     {
-        bytes8 testval(s_over);
-        bytes enc = testval.to_bytes(8,little);
+        bytes testval("hello");
+        bytes enc = testval.to_bytes(testval.size(),little);
         print_hex(enc);
 
-        bytes8 dec;
+        bytes dec;
         dec.from_bytes(enc, little);
-
-        CHECK_SUCESS(testval, dec);
+        CHECK_SUCESS("bytes",testval, dec);
     }
+// bytes32
     {
-        bytes8 testval(s_fit);
-        bytes enc = testval.to_bytes(8,little);
+        bytes32 testval("hello");
+        bytes enc = testval.to_bytes(testval.size(),little);
         print_hex(enc);
 
-        bytes8 dec;
+        bytes32 dec;
         dec.from_bytes(enc, little);
-
-        CHECK_SUCESS(testval, dec);
+        CHECK_SUCESS("bytes32",testval, dec);
     }
+// bytes48
     {
-        bytes8 testval(s_under);
-        bytes enc = testval.to_bytes(8,little);
+        bytes48 testval("hello");
+        bytes enc = testval.to_bytes(testval.size(),little);
         print_hex(enc);
 
-        bytes8 dec;
+        bytes48 dec;
         dec.from_bytes(enc, little);
-
-        CHECK_SUCESS(testval, dec);
+        CHECK_SUCESS("bytes48",testval, dec);
     }
+// bytes96
     {
-        bytes8 testval(b_over);
-        bytes enc = testval.to_bytes(8,little);
+        bytes96 testval("hello");
+        bytes enc = testval.to_bytes(testval.size(),little);
         print_hex(enc);
 
-        bytes8 dec;
+        bytes96 dec;
         dec.from_bytes(enc, little);
-
-        CHECK_SUCESS(testval, dec);
-    }
-    {
-        bytes8 testval(b_fit);
-        bytes enc = testval.to_bytes(8,little);
-        print_hex(enc);
-
-        bytes8 dec;
-        dec.from_bytes(enc, little);
-
-        CHECK_SUCESS(testval, dec);
-    }
-    {
-        bytes8 testval(b_under);
-        bytes enc = testval.to_bytes(8,little);
-        print_hex(enc);
-
-        bytes8 dec;
-        dec.from_bytes(enc, little);
-
-        CHECK_SUCESS(testval, dec);
-    }
-
-    {
-        bytesN<16> testval(s_under);
-        bytes enc = testval.to_bytes(16,little);
-        print_hex(enc);
-
-        bytesN<16> dec;
-        dec.from_bytes(enc, little);
-
-        CHECK_SUCESS(testval, dec);
+        CHECK_SUCESS("bytes96",testval, dec);
     }
 }
 

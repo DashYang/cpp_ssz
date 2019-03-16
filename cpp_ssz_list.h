@@ -10,7 +10,7 @@
 
 namespace ssz {
 template<class T>
-class List: public cpp_ssz_types
+class List
 {
 protected:
 	unsigned int m_size;
@@ -59,14 +59,14 @@ template<class T>
 bytes List<T>::to_bytes(unsigned int size, byteorder bo)
 {
 
-    bytes temp1;
+    std::vector<byte> temp1;
     for (unsigned i=0; i < m_data.size(); i++) {
         bytes t = m_data[i].to_bytes(m_data[i].size(), little);
-        temp1.insert(temp1.end(), t.begin(), t.end()); 
+        temp1.insert(temp1.end(), t.data().begin(), t.data().end()); 
     }
 
-	unsigned int prefix = SSZ_PREFIX + temp1.size();
-    bytes temp;
+	unsigned int prefix = temp1.size();
+    std::vector<byte> temp;
     if(bo == little) {
         temp.push_back((prefix >> 0) & 0xff);
         temp.push_back((prefix >> 8) & 0xff);

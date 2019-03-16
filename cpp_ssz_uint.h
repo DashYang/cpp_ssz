@@ -7,131 +7,128 @@
 #define __CPP_SSZ_UINT_H__
 
 #include "Common.h"
-#include <iostream>
+using namespace std;
 
 namespace ssz {
 
-template<unsigned int N>
-class uintN : public cpp_ssz_types
+template<class T, unsigned int N>
+class uint
 {
 protected:
 	unsigned int m_size;
-    bytes m_data;
+    T m_data;
 public:
-	uintN() 
+	uint() 
 	{ 
         assert(!(N % 8));
 		m_size = N / 8;
+        m_data = 0;
 	}
 
-	uintN(const std::string& a) 
+	uint(const T& a) 
 	{ 
         assert(!(N % 8));
 		m_size = N / 8;
-
-        std::string data = a;
-        if (data.size() >= 2 && data.substr(0, 2) == "0x")
-            data = data.substr(2, data.size()-2);
-
-        for (int i = 0; i < data.length(); i += 2) {
-            std::string byteString = data.substr(i, 2);
-            char byte = (char) strtol(byteString.c_str(), NULL, 16);
-            m_data.push_back(byte);
-        }
+        m_data = a;
 	}
 
-	~uintN()
+	~uint()
 	{
 
 	}
 
 	unsigned int size() const { return m_size; }
-	const bytes& data() const { return m_data; }
+	const T& data() const { return m_data; }
 
 // encode/decode section
-    void from_bytes(const bytes& data, byteorder bo);
+    void from_bytes(bytes& data, byteorder bo);
 	bytes to_bytes(unsigned int size, byteorder bo);
 
 // operators
-	bool operator==(const uintN<N>& b)
+	bool operator==(const T& b)
+	{
+	     return this->m_data == b;
+	}
+	bool operator==(const uint& b)
 	{
 	     return this->m_data == b.data();
 	}
 
 };
 
-template<unsigned int N>
-void uintN<N>::from_bytes(const bytes& data, byteorder bo)
+template<class T, unsigned int N>
+void uint<T, N>::from_bytes(bytes& data, byteorder bo)
 {
     assert(data.size() == (N/8));
+    m_data = 0;
     if(bo == little) {
-        for(int i=N/8 -1; i >= 0 ; i--)
-            m_data.push_back(data[i]);
+        for(int i=0; i< m_size; i++) 
+            m_data += static_cast<T>(data[i]) << (i*8);
     }
     else {
-        for(int i=0; i< N/8; i++)
-            m_data.push_back(data[i]);
+        for(int i=m_size-1; i >= 0 ; i--)
+            m_data += static_cast<T>(data[i]) << (i*8);
     }
 }
 
-template<unsigned int N>
-bytes uintN<N>::to_bytes(unsigned int size, byteorder bo)
+template<class T, unsigned int N>
+bytes uint<T, N>::to_bytes(unsigned int size, byteorder bo)
 {
     bytes temp;
     if(bo == little) {
-        for(int i=N/8 -1; i >= 0 ; i--)
-            temp.push_back(m_data[i]);
+        for(int i=0; i< m_size; i++)
+            temp.push_back(reinterpret_cast<byte*>(&m_data)[i]);
     }
     else { 
-        for(int i=0; i< N/8; i++)
-            temp.push_back(m_data[i]);
+        for(int i=m_size-1; i >= 0 ; i--)
+            temp.push_back(reinterpret_cast<byte*>(&m_data)[i]);
     }
 	return bytes(temp); 
 }
 
 
 //Shorten types
-class uint8 : public uintN<8> 
+class uint8 : public uint<u8, 8> 
 {
 public:
     uint8() {}
-    uint8(const std::string& data):uintN(data) {}
+    uint8(const u8& data):uint(data) {}
 };
 
-class uint16 : public uintN<16> 
+class uint16 : public uint<u16, 16> 
 {
 public:
     uint16() {}
-    uint16(const std::string& data):uintN(data) {}
+    uint16(const u16& data):uint(data) {}
 };
 
 
-class uint32 : public uintN<32> 
+class uint32 : public uint<u32, 32> 
 {
 public:
     uint32() {}
-    uint32(const std::string& data):uintN(data) {}
+    uint32(const u32& data):uint(data) {}
 };
 
-class uint64 : public uintN<64> 
+class uint64 : public uint<u64, 64> 
 {
 public:
     uint64() {}
-    uint64(const std::string& data):uintN(data) {}
+    uint64(const u64& data):uint(data) {}
 };
 
-class uint128 : public uintN<128> 
+class uint128 : public uint<u128, 128> 
 {
 public:
     uint128() {}
-    uint128(const std::string& data):uintN(data) {}
+    uint128(const u128& data):uint(data) {}
 };
 
-class uint256 : public uintN<256> 
+class uint256 : public uint<u256, 256> 
 {
 public:
     uint256() {}
-    uint256(const std::string& data):uintN(data) {}
+    uint256(const u256& data):uint(data) {}
 };
 
 }//namespace

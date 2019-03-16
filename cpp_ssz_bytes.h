@@ -10,7 +10,7 @@
 
 namespace ssz {
 template<unsigned int N>
-class bytesN : public cpp_ssz_types
+class bytesN
 {
 protected:
 	unsigned int m_size;
@@ -23,15 +23,15 @@ public:
 		m_size = N;
 	}
 
-	bytesN(const bytes& value) 
+	bytesN(bytes& value) 
 	{ 
         assert(!(N % 8));
 		m_size = N;
         std::fill(m_data.begin(), m_data.end(), 0);
         if( value.size() <= N) 
-            std::copy_n(value.begin(), value.size(), m_data.begin());
+            std::copy_n(value.data().begin(), value.data().size(), m_data.begin());
         else
-            std::copy_n(value.begin(), N , m_data.begin());
+            std::copy_n(value.data().begin(), N , m_data.begin());
 	}
 
 	bytesN(const std::string& value) 
@@ -51,11 +51,11 @@ public:
 	}
 
 	unsigned int size() const { return m_size; }
-	const unsigned char* data() { return m_data.data(); }
+	std::array<byte, N> data() { return m_data; }
 	const std::array<byte, N>& get_data_array() const { return m_data; }
 
 // encode/decode section
-    void from_bytes(const bytes& data, byteorder bo);
+    void from_bytes(bytes& data, byteorder bo);
 	bytes to_bytes(unsigned int size, byteorder bo);
 
 // operators
@@ -66,10 +66,10 @@ public:
 };
 
 template<unsigned int N>
-void bytesN<N>::from_bytes(const bytes& data, byteorder bo)
+void bytesN<N>::from_bytes(bytes& data, byteorder bo)
 {
 	int prefix = 0;
-    assert(data.size() >= (N+LENGTH_BYTES));
+    assert(data.size() >= N);
 
     if(bo == little) {
         prefix |= data[3] << 24;
@@ -83,17 +83,16 @@ void bytesN<N>::from_bytes(const bytes& data, byteorder bo)
         prefix |= data[2] << 8;
         prefix |= data[3] << 0;
     }
-    prefix -= SSZ_PREFIX;
 
     for(int i=0; i< prefix; i++)
-        m_data[i] = data[LENGTH_BYTES+i];
+        m_data[i] = data[BYTES_PER_LENGTH_PREFIX+i];
 }
 
 template<unsigned int N>
 bytes bytesN<N>::to_bytes(unsigned int size, byteorder bo)
 {
-	unsigned int prefix = SSZ_PREFIX + m_size;
-    bytes temp;
+	unsigned int prefix = m_size;
+    std::vector<byte> temp;
     if(bo == little) {
         temp.push_back((prefix >> 0) & 0xff);
         temp.push_back((prefix >> 8) & 0xff);
@@ -111,12 +110,30 @@ bytes bytesN<N>::to_bytes(unsigned int size, byteorder bo)
 }
 
 
-class bytes8 : public bytesN<8> 
+class bytes32 : public bytesN<32> 
 {
 public:
-    bytes8() {}
-    bytes8(bytes& data):bytesN(data) {}
-    bytes8(std::string& data):bytesN(data) {}
+    bytes32() {}
+    bytes32(bytes& data):bytesN(data) {}
+    bytes32(const std::string& data):bytesN(data) {}
 };
+
+class bytes48 : public bytesN<48> 
+{
+public:
+    bytes48() {}
+    bytes48(bytes& data):bytesN(data) {}
+    bytes48(const std::string& data):bytesN(data) {}
+};
+
+class bytes96 : public bytesN<96> 
+{
+public:
+    bytes96() {}
+    bytes96(bytes& data):bytesN(data) {}
+    bytes96(const std::string& data):bytesN(data) {}
+};
+
+
 }//namespace
 #endif

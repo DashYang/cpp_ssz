@@ -9,7 +9,7 @@
 #include "Common.h"
 
 namespace ssz {
-class Bool: public cpp_ssz_types 
+class Bool 
 {
 	unsigned int m_size;
     bool m_data;
@@ -25,15 +25,18 @@ public:
         m_data = value;
 	}
 	unsigned int size() const { return m_size; }
-	const bool data() const { return m_data; }
+    bool data() const { return m_data; }
 
 // encode/decode section
-    void from_bytes(const bytes& data, byteorder bo)
+    void from_bytes(bytes& data, byteorder bo)
     {
         assert(data[0] == 0x01 || data[0] == 0x00 );
-        if(data[0] == 0x01) m_data = true; 
-        else m_data = false;
+        if(data[0] == 0x01)
+            m_data =  true;
+        else
+            m_data = false;
     }
+
     bytes to_bytes(unsigned int size, byteorder bo)
     {
         bytes temp;
@@ -47,6 +50,10 @@ public:
 	bool operator==(const Bool& b)
 	{
 	     return this->m_data == b.data();
+	}
+	bool operator==(const bool b)
+	{
+	     return this->m_data == b;
 	}
 };
 }//namespace
