@@ -52,16 +52,15 @@ public:
 
 	unsigned int size() const { return m_size; }
 	std::array<byte, N> data() { return m_data; }
-	const std::array<byte, N>& get_data_array() const { return m_data; }
 
 // encode/decode section
     void from_bytes(bytes& data, byteorder bo);
 	bytes to_bytes(unsigned int size, byteorder bo);
 
 // operators
-	bool operator==(const bytesN<N>& b)
+	bool operator==(bytesN<N>& b)
 	{
-	     return this->m_data == b.get_data_array();
+	     return this->m_data == b.data();
 	}
 };
 

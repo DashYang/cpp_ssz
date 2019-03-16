@@ -17,41 +17,66 @@ void print_hex(const bytes& a) {
 		printf("\n");
 }
 
-#define CHECK_SUCESS(a,b){ a==b ? cout << "\033[1;32mSUCCESS\033[0m\n": cout << "\033[1;31mFAIL\033[0m\n;";}
+#define CHECK_SUCESS(testname, a,b){ cout<< testname << " "; a==b ? cout << "\033[1;32mSUCCESS\033[0m\n": cout << "\033[1;31mFAIL\033[0m\n";}
 
 int main()
 {
-
 /*
-    List<bytes8> a;
-// initial values  
-    string s_over = "abcdefghijk";
-    string s_fit = "abcdefgh";
-    string s_under = "abcde";
-
-    bytes b_over(s_over.begin(), s_over.end());
-    bytes b_fit(s_fit.begin(), s_fit.end());
-    bytes b_under(s_under.begin(), s_under.end());
-
-    a.data().push_back(bytes8(b_over));
-    a.data().push_back(bytes8(b_fit));
-    a.data().push_back(bytes8(b_under));
-
-    bytes enc = a.to_bytes(0, little);
-    print_hex(enc);
-
-
-    uint256 testval1("0x1111111111111111111111111111111111111111111111111111111111111111");
-    uint256 testval2("0x2222222222222222222222222222222222222222222222222222222222222222");
-    uint256 testval3("0x3333333333333333333333333333333333333333333333333333333333333333");
-    List<uint256> b;
-    b.data().push_back(testval1);
-    b.data().push_back(testval2);
-    b.data().push_back(testval3);
-
-    bytes enc1 = b.to_bytes(0, little);
-    print_hex(enc1);
+        (
+            [0, 1, 2, 3, 4],
+            uint32_list,
+            b'\x14\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00'
+            b'\x02\x00\x00\x00\x03\x00\x00\x00\x04\x00\x00\x00',
+        ),
 */
+
+    {
+        u32 a1(0);
+        u32 a2(1);
+        u32 a3(2);
+        u32 a4(3);
+        u32 a5(4);
+        List<uint32> testval;
+
+        testval.push_back(a1);
+        testval.push_back(a2);
+        testval.push_back(a3);
+        testval.push_back(a4);
+        testval.push_back(a5);
+
+        bytes enc = testval.to_bytes(0, little);
+        print_hex(enc);
+
+        List<uint32> dec;
+        dec.from_bytes(enc, little);
+        bytes re_enc = dec.to_bytes(0, little);
+        print_hex(re_enc);
+        CHECK_SUCESS("List<uint32>",enc, re_enc);
+    }
+
+    {
+        bytes48 a1("hello");
+        bytes48 a2("hello");
+        bytes48 a3("hello");
+        bytes48 a4("hello");
+        bytes48 a5("hello");
+        List<bytes48> testval;
+
+        testval.push_back(a1);
+        testval.push_back(a2);
+        testval.push_back(a3);
+        testval.push_back(a4);
+        testval.push_back(a5);
+
+        bytes enc = testval.to_bytes(0, little);
+        print_hex(enc);
+
+        List<bytes48> dec;
+        dec.from_bytes(enc, little);
+        bytes re_enc = dec.to_bytes(0, little);
+        print_hex(re_enc);
+        CHECK_SUCESS("List<uint32>",enc, re_enc);
+    }
     
 }
 

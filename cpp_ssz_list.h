@@ -29,30 +29,39 @@ public:
 	std::vector<T>& data() { return m_data; }
 
 // encode/decode section
-    void from_bytes(const bytes& data, byteorder bo);
+    void from_bytes(bytes& data, byteorder bo);
 	bytes to_bytes(unsigned int size, byteorder bo);
-/*
+
 // operators
-	bool operator==(const bytesN<N>& b)
-	{
-	     return this->m_data == b.get_data_array();
-	}
-*/
+    void push_back(T a) {
+        return m_data.push_back(a);
+    }
 };
 
 template<class T>
-void List<T>::from_bytes(const bytes& data, byteorder bo)
+void List<T>::from_bytes(bytes& data, byteorder bo)
 {
-/*
 	int prefix = 0;
-    prefix |= data[0] << 16;
-	prefix |= data[1] << 8;
-	prefix |= data[2] << 0;
-    prefix -= 8388608;
 
-    for(int i=0; i< prefix; i++)
-        m_data[i] = data[3+i];
-*/
+    if(bo == little) {
+        prefix |= data[3] << 24;
+        prefix |= data[2] << 16;
+        prefix |= data[1] << 8;
+        prefix |= data[0] << 0;
+    }
+    else {
+        prefix |= data[0] << 24;
+        prefix |= data[1] << 16;
+        prefix |= data[2] << 8;
+        prefix |= data[3] << 0;
+    }
+
+    T b;
+    for(int i=0; i< prefix / b.size(); i++) {
+        T a(data[4+b.size() * i]);
+        m_data.push_back(a);
+    }
+
 }
 
 template<class T>
