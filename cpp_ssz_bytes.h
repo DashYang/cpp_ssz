@@ -7,69 +7,91 @@
 #define __CPP_SSZ_BYTES_H__
 
 #include "Common.h"
-
 namespace ssz {
-template<unsigned int N>
-class bytesN
+
+#if 0
+class bytes
 {
 protected:
 	unsigned int m_size;
-	std::array<byte, N> m_data;
+    std::vector<byte> m_data;
+
 public:
-	bytesN() 
+	bytes() 
 	{ 
-        assert(!(N % 8));
-        std::fill(m_data.begin(), m_data.end(), 0);
-		m_size = N;
+		m_size = 0;
 	}
 
-	bytesN(bytes& value) 
+	bytes(const std::string& value) 
 	{ 
-        assert(!(N % 8));
-		m_size = N;
-        std::fill(m_data.begin(), m_data.end(), 0);
-        if( value.size() <= N) 
-            std::copy_n(value.data().begin(), value.data().size(), m_data.begin());
-        else
-            std::copy_n(value.data().begin(), N , m_data.begin());
+		m_size = value.size();
+        m_data.reserve(m_size);
+        std::copy(value.begin(), value.end(), std::back_inserter(m_data));
 	}
 
-	bytesN(const std::string& value) 
+	bytes(const bytes& value) 
 	{ 
-        assert(!(N % 8));
-		m_size = N;
-        std::fill(m_data.begin(), m_data.end(), 0);
-        if( value.size() <= N) 
-            std::copy_n(value.begin(), value.size(), m_data.begin());
-        else
-            std::copy_n(value.begin(), N , m_data.begin());
+		m_size = value.data().size();
+        m_data.assign(value.data().begin(), value.data().end());
 	}
 
-	~bytesN()
+	bytes(const bytes& value, unsigned int size) 
+	{ 
+		m_size = size;
+        m_data.assign(value.data().begin(), value.data().begin()+m_size);
+	}
+
+	bytes(const bytes& value, unsigned int begin, unsigned int end) 
+	{ 
+		m_size = end - begin;
+        m_data.assign(value.data().begin(), value.data().begin()+m_size);
+	}
+
+	bytes(const std::vector<byte>& value) 
+	{ 
+		m_size = value.size();
+        m_data.assign(value.begin(), value.end());
+	}
+
+	~bytes()
 	{
 		m_data.empty();
 	}
 
 	unsigned int size() const { return m_size; }
-	std::array<byte, N> data() { return m_data; }
+	const std::vector<byte>& data() const { return m_data; }
 
 // encode/decode section
     void from_bytes(bytes& data, byteorder bo);
 	bytes to_bytes(unsigned int size, byteorder bo);
 
 // operators
-	bool operator==(bytesN<N>& b)
+	bool operator==(const bytes& b)
 	{
 	     return this->m_data == b.data();
 	}
+
+    byte& operator [](int idx) {
+        return m_data[idx];
+    }
+
+    void push_back(byte a) {
+        return m_data.push_back(a);
+    }
+
+    std::vector<byte>::iterator begin() {
+        return m_data.begin();
+    }
+
+    std::vector<byte>::iterator end() {
+        return m_data.end();
+    }
+
 };
 
-template<unsigned int N>
-void bytesN<N>::from_bytes(bytes& data, byteorder bo)
+void bytes::from_bytes(bytes& data, byteorder bo)
 {
 	int prefix = 0;
-    assert(data.size() >= N);
-
     if(bo == little) {
         prefix |= data[3] << 24;
         prefix |= data[2] << 16;
@@ -82,13 +104,11 @@ void bytesN<N>::from_bytes(bytes& data, byteorder bo)
         prefix |= data[2] << 8;
         prefix |= data[3] << 0;
     }
-
     for(int i=0; i< prefix; i++)
-        m_data[i] = data[BYTES_PER_LENGTH_PREFIX+i];
+        m_data.push_back(data[BYTES_PER_LENGTH_PREFIX+i]);
 }
 
-template<unsigned int N>
-bytes bytesN<N>::to_bytes(unsigned int size, byteorder bo)
+bytes bytes::to_bytes(unsigned int size, byteorder bo)
 {
 	unsigned int prefix = m_size;
     std::vector<byte> temp;
@@ -108,31 +128,76 @@ bytes bytesN<N>::to_bytes(unsigned int size, byteorder bo)
 	return bytes(temp); 
 }
 
+#else
 
-class bytes32 : public bytesN<32> 
+class bytes: private std::vector<byte>
 {
 public:
-    bytes32() {}
-    bytes32(bytes& data):bytesN(data) {}
-    bytes32(const std::string& data):bytesN(data) {}
+    using std::vector<byte>::size; 
+    using std::vector<byte>::begin;
+    using std::vector<byte>::end;
+    using std::vector<byte>::push_back;
+    using std::vector<byte>::insert;
+    using std::vector<byte>::operator[]; 
+    using std::vector<byte>::const_iterator; 
+    using std::vector<byte>::resize; 
+
+	bytes() {}
+	bytes(const std::string& v) 
+    { 
+        for(byte c : v) this->push_back(c);
+	}
+
+ // encode/decode section
+    void from_bytes(bytes& data, byteorder bo);
+	bytes to_bytes(unsigned int size, byteorder bo);
+
+// operators
+	bool operator==(const bytes& b)
+	{
+	     return std::equal(b.begin(), b.end(), this->begin());
+	}
 };
 
-class bytes48 : public bytesN<48> 
+void bytes::from_bytes(bytes& data, byteorder bo)
 {
-public:
-    bytes48() {}
-    bytes48(bytes& data):bytesN(data) {}
-    bytes48(const std::string& data):bytesN(data) {}
-};
+	int prefix = 0;
+    if(bo == little) {
+        prefix |= data[3] << 24;
+        prefix |= data[2] << 16;
+        prefix |= data[1] << 8;
+        prefix |= data[0] << 0;
+    }
+    else {
+        prefix |= data[0] << 24;
+        prefix |= data[1] << 16;
+        prefix |= data[2] << 8;
+        prefix |= data[3] << 0;
+    }
+    for(int i=0; i< prefix; i++)
+        this->push_back(data[BYTES_PER_LENGTH_PREFIX+i]);
+}
 
-class bytes96 : public bytesN<96> 
+bytes bytes::to_bytes(unsigned int size, byteorder bo)
 {
-public:
-    bytes96() {}
-    bytes96(bytes& data):bytesN(data) {}
-    bytes96(const std::string& data):bytesN(data) {}
-};
+	unsigned int prefix = size;
+    bytes temp;
+    if(bo == little) {
+        temp.push_back((prefix >> 0) & 0xff);
+        temp.push_back((prefix >> 8) & 0xff);
+        temp.push_back((prefix >> 16)& 0xff);
+        temp.push_back((prefix >> 24)& 0xff);
+    }
+    else {
+        temp.push_back((prefix >> 24)& 0xff);
+        temp.push_back((prefix >> 16)& 0xff);
+        temp.push_back((prefix >> 8) & 0xff);
+        temp.push_back((prefix >> 0) & 0xff);
+    }
+    temp.insert(temp.end(), this->begin(), this->end());
+	return bytes(temp); 
+}
 
-
-}//namespace
+#endif
+}
 #endif

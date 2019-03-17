@@ -11,7 +11,7 @@ using namespace ssz;
 //pretty printer section
 void print_hex(const bytes& a) {
 		for(int i=0; i<a.size(); i++)
-			printf("%02x", a.data()[i]);
+			printf("%02x", a[i]);
 		printf("\n");
 }
 

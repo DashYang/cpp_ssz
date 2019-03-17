@@ -7,6 +7,7 @@
 #define __CPP_SSZ_UINT_H__
 
 #include "Common.h"
+#include "cpp_ssz_bytes.h"
 using namespace std;
 
 namespace ssz {
@@ -59,7 +60,7 @@ public:
 template<class T, unsigned int N>
 void uint<T, N>::from_bytes(bytes& data, byteorder bo)
 {
-    assert(data.size() == (N/8));
+    //assert(data.size() == (N/8));
     m_data = 0;
     if(bo == little) {
         for(int i=0; i< m_size; i++) 

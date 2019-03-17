@@ -4,9 +4,10 @@
 */ 
 
 #include "Common.h"
-#include "cpp_ssz_bytes.h"
+#include "cpp_ssz_bytesN.h"
 using namespace std;
 using namespace ssz;
+
 
 //pretty printer section
 void print_hex(const bytes& a) {
@@ -19,33 +20,35 @@ void print_hex(const bytes& a) {
 
 int main()
 {
-/*
-        (b"", b'\x00\x00\x00\x00'),
-        (b"I", b'\x01\x00\x00\x00I'),
-        (b"foo", b'\x03\x00\x00\x00foo'),
-        (b"hello", b'\x05\x00\x00\x00hello'),
-*/
-
-// bytes
+// bytes32
     {
-        bytes testval("");
+        bytes32 testval("hello");
         bytes enc = testval.to_bytes(testval.size(),little);
         print_hex(enc);
-        bytes dec;
+
+        bytes32 dec;
         dec.from_bytes(enc, little);
-        print_hex(dec);
-        CHECK_SUCESS("bytes",testval, dec);
+        CHECK_SUCESS("bytes32",testval, dec);
     }
-
-// bytes
+// bytes48
     {
-        bytes testval("hello");
+        bytes48 testval("hello");
         bytes enc = testval.to_bytes(testval.size(),little);
         print_hex(enc);
-        bytes dec;
+
+        bytes48 dec;
         dec.from_bytes(enc, little);
-        print_hex(dec);
-        CHECK_SUCESS("bytes",testval, dec);
+        CHECK_SUCESS("bytes48",testval, dec);
+    }
+// bytes96
+    {
+        bytes96 testval("hello");
+        bytes enc = testval.to_bytes(testval.size(),little);
+        print_hex(enc);
+
+        bytes96 dec;
+        dec.from_bytes(enc, little);
+        CHECK_SUCESS("bytes96",testval, dec);
     }
 }
 

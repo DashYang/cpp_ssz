@@ -1,6 +1,7 @@
+ADD_EXECUTABLE(test_bytes test_bytes.cpp)
 ADD_EXECUTABLE(test_bool  test_bool.cpp)
 ADD_EXECUTABLE(test_uintN  test_uint.cpp)
-ADD_EXECUTABLE(test_bytesN test_bytes.cpp)
+ADD_EXECUTABLE(test_bytesN test_bytesN.cpp)
 ADD_EXECUTABLE(test_list   test_list.cpp)
 ADD_EXECUTABLE(test_tuple   test_tuple.cpp)
 ADD_EXECUTABLE(test_container   test_container.cpp)

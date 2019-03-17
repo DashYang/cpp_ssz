@@ -5,6 +5,7 @@
 
 #include "Common.h"
 #include "cpp_ssz_bytes.h"
+#include "cpp_ssz_bytesN.h"
 #include "cpp_ssz_uint.h"
 #include "cpp_ssz_list.h"
 using namespace std;
@@ -13,7 +14,7 @@ using namespace ssz;
 //pretty printer section
 void print_hex(const bytes& a) {
 		for(int i=0; i<a.size(); i++)
-			printf("%02x", a.data()[i]);
+			printf("%02x", a[i]);
 		printf("\n");
 }
 
@@ -31,52 +32,45 @@ int main()
 */
 
     {
-        u32 a1(0);
-        u32 a2(1);
-        u32 a3(2);
-        u32 a4(3);
-        u32 a5(4);
         List<uint32> testval;
 
+        uint32 a0(1);
+        uint32 a1(2);
+        uint32 a2(3);
+        uint32 a3(4);
+        uint32 a4(5);
+
+        testval.push_back(a0);
         testval.push_back(a1);
         testval.push_back(a2);
         testval.push_back(a3);
         testval.push_back(a4);
-        testval.push_back(a5);
 
-        bytes enc = testval.to_bytes(0, little);
+        bytes enc = testval.to_bytes(a0.size(), little);
         print_hex(enc);
 
         List<uint32> dec;
         dec.from_bytes(enc, little);
-        bytes re_enc = dec.to_bytes(0, little);
+        bytes re_enc = dec.to_bytes(a0.size(), little);
         print_hex(re_enc);
         CHECK_SUCESS("List<uint32>",enc, re_enc);
     }
 
     {
-        bytes48 a1("hello");
-        bytes48 a2("hello");
-        bytes48 a3("hello");
-        bytes48 a4("hello");
-        bytes48 a5("hello");
         List<bytes48> testval;
+        bytes48 a1("abcd");
+        bytes48 a2("abcd");
 
         testval.push_back(a1);
         testval.push_back(a2);
-        testval.push_back(a3);
-        testval.push_back(a4);
-        testval.push_back(a5);
-
-        bytes enc = testval.to_bytes(0, little);
+        bytes enc = testval.to_bytes(a1.size(), little);
         print_hex(enc);
 
         List<bytes48> dec;
         dec.from_bytes(enc, little);
-        bytes re_enc = dec.to_bytes(0, little);
+        bytes re_enc = dec.to_bytes(a1.size(), little);
         print_hex(re_enc);
-        CHECK_SUCESS("List<uint32>",enc, re_enc);
+        CHECK_SUCESS("List<bytes48>",enc, re_enc);
     }
-    
 }
 

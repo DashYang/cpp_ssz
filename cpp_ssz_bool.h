@@ -7,6 +7,7 @@
 #define __CPP_SSZ_BOOL_H__
 
 #include "Common.h"
+#include "cpp_ssz_bytes.h"
 
 namespace ssz {
 class Bool 
