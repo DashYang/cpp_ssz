@@ -12,76 +12,86 @@ https://github.com/ethereum/eth2.0-specs/blob/master/specs/simple-serialize.md
 
 ### bool Usage
 ```
+//encoding
         Bool testval(true);
         bytes enc = testval.to_bytes(1,little);
-        print_hex(enc);
+//decoding
+        Bool dec;
+        dec.from_bytes(enc, little);
+```
+### bytes Usage
+```
+//encoding
+        bytes testval("hello");
+        bytes enc = testval.to_bytes(testval.size(),little);
+//decoding
+        bytes dec;
+        dec.from_bytes(enc, little);
 ```
 ### bytesN Usage
 ```
-//fixed length type
-        bytes8 testval(s_over);
-        bytes enc = testval.to_bytes(8,little);
-        print_hex(enc);
+// bytes[32, 48, 96]
+//encoding
+        bytes32 testval("hello");
+        bytes enc = testval.to_bytes(testval.size(),little);
 
-        bytes8 dec;
-        dec.from_bytes(enc, little);
-
-//variable length
-        bytesN<16> testval(s_under);
-        bytes enc = testval.to_bytes(16,little);
-        print_hex(enc);
-
-        bytesN<16> dec;
+//decoding
+        bytes32 dec;
         dec.from_bytes(enc, little);
 ```
 
 ### uintN Usage
 ```
-//fixed length type
-    uint256 testval("0x16b3dfaec148fb1bb2b066f10ec285e7c9bf402ab32aa78a5d38e34566810cd2");
-    bytes enc = testval.to_bytes(256/8,little);
+//uint[8, 16, 32, 64, 128, 256]
+//encoding
+        u64 a(18446744073709551615);
+        uint64 testval(a);
+        bytes enc = testval.to_bytes(testval.size(),little);
 
-    uint256 dec;
-    dec.from_bytes(enc, little);
-
-//variable length
-    uintN<264> 
-    ...
-```
-
-### tuple Usage
-```
-//tuple: ordered fixed-length homogeneous collection of values
-//[type, N]
-    Tuple<uint256, 3> a;
-    a[0] = testval1;
-    a[1] = testval2;
-    a[2] = testval3;
-
-    bytes enc = a.to_bytes(0, little);
+//decoding
+        uint64 dec;
+        dec.from_bytes(enc, little);
 ```
 
 ### list Usage
 ```
 //list: ordered variable-length homogenous collection of values
-//[type]
-    List<bytes8> a;
-    a.data().push_back(bytes8(b_over));
-    a.data().push_back(bytes8(b_fit));
-    a.data().push_back(bytes8(b_under));
-    bytes enc = a.to_bytes(0, little);
+//encoding
+        List<uint32> testval;
+        testval.push_back(a0);
+        testval.push_back(a1);
+        uint32 a0(1);
+        uint32 a1(2);
+        bytes enc = testval.to_bytes(a0.size(), little);
 
-    List<uint256> b;
-    b.data().push_back(testval1);
-    b.data().push_back(testval2);
-    b.data().push_back(testval3);
-    bytes enc1 = b.to_bytes(0, little);
+//decoding
+        List<uint32> dec;
+        dec.from_bytes(enc, little);
 ```
+### tuple Usage
+```
+//tuple: ordered fixed-length homogeneous collection of values
+//encoding
+    Tuple<uint256, 3> a;
+    u256 data("0x16b3dfaec148fb1bb2b066f10ec285e7c9bf402ab32aa78a5d38e34566810cd2");
+    uint256 testval(data);
+    a[0] = testval;
+    a[1] = testval;
+    a[2] = testval;
+
+    bytes enc = a.to_bytes(0, little);
+```
+
 
 ### container Usage
 ```
 //container: ordered heterogenous collection of values
-    Container<bytes8,uint256> a; 
-    a.data().push_back(std::make_pair(bytes8(b_over),testval1));
+//encoding
+    u256 data("0x16b3dfaec148fb1bb2b066f10ec285e7c9bf402ab32aa78a5d38e34566810cd2");
+    uint256 testval(data);
+    bytes b("abcdefg");
+
+    Container<bytes32,uint256> a; 
+    a.push_back(std::make_pair(bytes32(b),testval));
     bytes enc = a.to_bytes(0, little);
 ```
