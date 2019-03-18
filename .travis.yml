@@ -1,0 +1,35 @@
+dist: xenial
+
+sudo: required
+
+addon_shortcuts:
+  gcc8: &gcc8
+    apt:
+      update: true
+      sources:
+        - sourceline: 'ppa:mhier/libboost-latest'
+        - ubuntu-toolchain-r-test
+      packages:
+        - g++-8
+        - boost1.67
+
+
+addons:
+  apt:
+    update: true
+    packages:
+      - cmake
+
+before_install:
+
+matrix:
+  include:
+    - { env: 'STD=11 CXX=g++-8 CMAKEFLAGS=-DNO_DEPRECATED=YES', addons: *gcc8 }
+
+  allow_failures:
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make -j

@@ -1,4 +1,5 @@
 # cpp_ssz
+[![Build Status](https://travis-ci.org/NAKsir-melody/cpp_ssz.svg?branch=master)](https://travis-ci.org/NAKsir-melody/cpp_ssz)
 Simple serialization for ethereum (cpp version)
 
 ### SSZ SPEC
