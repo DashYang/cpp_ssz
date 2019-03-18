@@ -58,10 +58,10 @@ https://github.com/ethereum/eth2.0-specs/blob/master/specs/simple-serialize.md
 //list: ordered variable-length homogenous collection of values
 //encoding
         List<uint32> testval;
-        testval.push_back(a0);
-        testval.push_back(a1);
         uint32 a0(1);
         uint32 a1(2);
+        testval.push_back(a0);
+        testval.push_back(a1);
         bytes enc = testval.to_bytes(a0.size(), little);
 
 //decoding
@@ -87,9 +87,9 @@ https://github.com/ethereum/eth2.0-specs/blob/master/specs/simple-serialize.md
 ```
 //container: ordered heterogenous collection of values
 //encoding
+    bytes b("abcdefg");
     u256 data("0x16b3dfaec148fb1bb2b066f10ec285e7c9bf402ab32aa78a5d38e34566810cd2");
     uint256 testval(data);
-    bytes b("abcdefg");
 
     Container<bytes32,uint256> a; 
     a.push_back(std::make_pair(bytes32(b),testval));
