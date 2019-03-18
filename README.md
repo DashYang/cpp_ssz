@@ -10,14 +10,6 @@ https://github.com/ethereum/eth2.0-specs/blob/master/specs/simple-serialize.md
 3. cmake ../
 4. make
 
-### Run tests
-test_bool  
-test_uintN
-test_bytesN  
-test_tuple  
-test_container  
-test_list  
-
 ### bool Usage
 ```
         Bool testval(true);

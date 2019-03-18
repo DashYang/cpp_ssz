@@ -21,18 +21,15 @@ void print_hex(const bytes& a) {
 
 int main()
 {
-/*
 // initial values  
-    uint256 testval1("0x1111111111111111111111111111111111111111111111111111111111111111");
-    uint256 testval2("0x2222222222222222222222222222222222222222222222222222222222222222");
-    uint256 testval3("0x3333333333333333333333333333333333333333333333333333333333333333");
     Tuple<uint256, 3> a;
-    a[0] = testval1;
-    a[1] = testval2;
-    a[2] = testval3;
+    u256 data("0x16b3dfaec148fb1bb2b066f10ec285e7c9bf402ab32aa78a5d38e34566810cd2");
+    uint256 testval(data);
+    a[0] = testval;
+    a[1] = testval;
+    a[2] = testval;
 
     bytes enc = a.to_bytes(0, little);
     print_hex(enc);
- */   
 }
 

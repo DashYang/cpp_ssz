@@ -11,7 +11,6 @@
 using namespace std;
 
 namespace ssz {
-
 template<class T, unsigned int N>
 class uint
 {
@@ -54,7 +53,6 @@ public:
 	{
 	     return this->m_data == b.data();
 	}
-
 };
 
 template<class T, unsigned int N>
@@ -86,8 +84,6 @@ bytes uint<T, N>::to_bytes(unsigned int size, byteorder bo)
     }
 	return bytes(temp); 
 }
-
-
 //Shorten types
 class uint8 : public uint<u8, 8> 
 {
