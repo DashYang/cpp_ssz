@@ -59,41 +59,14 @@ namespace ssz {
     template<unsigned int N>
         void bytesN<N>::from_bytes(bytes& data, byteorder bo)
         {
-            int prefix = 0;
-            if(bo == little) {
-                prefix |= data[3] << 24;
-                prefix |= data[2] << 16;
-                prefix |= data[1] << 8;
-                prefix |= data[0] << 0;
-            }
-            else {
-                prefix |= data[0] << 24;
-                prefix |= data[1] << 16;
-                prefix |= data[2] << 8;
-                prefix |= data[3] << 0;
-            }
-
-            for(int i=0; i< prefix; i++)
-                this->at(i) = data[BYTES_PER_LENGTH_PREFIX+i];
+            for(int i=0; i< N; i++)
+                this->at(i) = data[i];
         }
 
     template<unsigned int N>
         bytes bytesN<N>::to_bytes(unsigned int size, byteorder bo)
         {
-            unsigned int prefix = size;
             bytes temp;
-            if(bo == little) {
-                temp.push_back((prefix >> 0) & 0xff);
-                temp.push_back((prefix >> 8) & 0xff);
-                temp.push_back((prefix >> 16)& 0xff);
-                temp.push_back((prefix >> 24)& 0xff);
-            }
-            else {
-                temp.push_back((prefix >> 24)& 0xff);
-                temp.push_back((prefix >> 16)& 0xff);
-                temp.push_back((prefix >> 8) & 0xff);
-                temp.push_back((prefix >> 0) & 0xff);
-            }
             temp.insert(temp.end(), this->begin(), this->end());
             return bytes(temp); 
         }
