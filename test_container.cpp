@@ -21,7 +21,14 @@ int main()
 
     Container<bytes32,uint256> a; 
     a.push_back(std::make_pair(bytes32(b),testval));
+    a.push_back(std::make_pair(bytes32(b),testval));
     bytes enc = a.to_bytes(0, little);
     print_hex(enc);
+
+    Container<bytes32,uint256> dec; 
+    dec.from_bytes(enc, little);
+    bytes re_enc = dec.to_bytes(0, little);
+    print_hex(re_enc);
+    CHECK_SUCESS("container<bytes32,uint256>",enc, re_enc);
 }
 

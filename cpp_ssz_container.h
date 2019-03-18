@@ -32,13 +32,41 @@ namespace ssz {
     template<class K, class V>
         void Container<K, V>::from_bytes(bytes& data, byteorder bo)
         {
+            int prefix = 0;
+
+            if(bo == little) {
+                prefix |= data[3] << 24;
+                prefix |= data[2] << 16;
+                prefix |= data[1] << 8;
+                prefix |= data[0] << 0;
+            }
+            else {
+                prefix |= data[0] << 24;
+                prefix |= data[1] << 16;
+                prefix |= data[2] << 8;
+                prefix |= data[3] << 0;
+            }
+
+            K a1;
+            V a2;
+            bytes b1;
+            b1.resize(a1.size());
+            bytes b2;
+            b2.resize(a2.size());
+            for(int i=0; i< prefix ; i += a1.size() + a2.size()) {
+                memcpy(&b1[0], &data[4+i], a1.size());
+                a1.from_bytes(b1, bo);
+                memcpy(&b2[0], &data[4+i+a1.size()], a2.size());
+                a2.from_bytes(b2, bo);
+                this->push_back(std::make_pair(a1,a2));
+            }
         }
 
     template<class K, class V>
         bytes Container<K, V>::to_bytes(unsigned int size, byteorder bo)
         {
 
-            std::vector<byte> temp1;
+            bytes temp1;
             for (unsigned i=0; i < this->size(); i++) {
                 bytes t1 = this->at(i).first.to_bytes(this->at(i).first.size(), little);
                 temp1.insert(temp1.end(), t1.begin(), t1.end()); 

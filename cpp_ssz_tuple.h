@@ -34,6 +34,14 @@ namespace ssz {
     template<class T, unsigned int N>
         void Tuple<T, N>::from_bytes(bytes& data, byteorder bo)
         {
+            T a;
+            bytes b;
+            b.resize(a.size());
+            for(int i=0; i< N ; i++) {
+                memcpy(&b[0], &data[i*a.size()], a.size());
+                a.from_bytes(b, bo);
+                this->at(i) = a;
+            }
         }
 
     template<class T, unsigned int N>

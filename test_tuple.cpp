@@ -24,5 +24,11 @@ int main()
 
     bytes enc = a.to_bytes(0, little);
     print_hex(enc);
+
+    Tuple<uint256, 3> dec;
+    dec.from_bytes(enc, little);
+    bytes re_enc = dec.to_bytes(0, little);
+    print_hex(re_enc);
+    CHECK_SUCESS("tuple<uint256>",enc, re_enc);
 }
 
