@@ -20,6 +20,7 @@ namespace ssz {
             using std::vector<byte>::operator[]; 
             using std::vector<byte>::const_iterator; 
             using std::vector<byte>::resize; 
+            using std::vector<byte>::data; 
 
             bytes() {}
             bytes(const std::string& v) 
