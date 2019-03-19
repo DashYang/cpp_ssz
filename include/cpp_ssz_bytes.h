@@ -26,6 +26,11 @@ namespace ssz {
             { 
                 for(byte c : v) this->push_back(c);
             }
+            bytes(const uint8_t* v, unsigned int size) 
+            { 
+                for(int i=0; i<size; i++)
+                this->push_back(v[i]);
+            }
 
             // encode/decode section
             void from_bytes(bytes& data, byteorder bo);
