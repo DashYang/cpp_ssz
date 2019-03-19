@@ -24,7 +24,7 @@ before_install:
 
 matrix:
   include:
-    - { env: 'STD=11 CXX=g++-8 CMAKEFLAGS=-DNO_DEPRECATED=YES', addons: *gcc8 }
+    - { env: 'STD=11 CC=gcc-8 CXX=g++-8 CMAKEFLAGS=-DNO_DEPRECATED=YES', addons: *gcc8 }
 
   allow_failures:
 
