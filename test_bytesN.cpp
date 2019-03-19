@@ -3,12 +3,12 @@
     @author SigmoiD <alphabet@hotmail.co.kr>
 */ 
 
-#include "Common.h"
-#include "cpp_ssz_bytesN.h"
+#include "include/Common.h"
+#include "include/cpp_ssz_bytesN.h"
 using namespace std;
 using namespace ssz;
 
-#include "test.h"
+#include "include/test.h"
 
 int main()
 {

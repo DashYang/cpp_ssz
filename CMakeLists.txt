@@ -1,3 +1,5 @@
+project(cpp_ssz)
+
 ADD_EXECUTABLE(test_bool  test_bool.cpp)
 ADD_EXECUTABLE(test_uintN  test_uint.cpp)
 ADD_EXECUTABLE(test_bytes test_bytes.cpp)

@@ -3,20 +3,20 @@
     @author SigmoiD <alphabet@hotmail.co.kr>
 */ 
 
-#include "Common.h"
-#include "cpp_ssz_bool.h"
-#include "cpp_ssz_uint.h"
-#include "cpp_ssz_bytes.h"
-#include "cpp_ssz_bytesN.h"
-#include "cpp_ssz_list.h"
-#include "cpp_ssz_tuple.h"
-#include "cpp_ssz_container.h"
-#include "cpp_ssz_util.h"
+#include "include/Common.h"
+#include "include/cpp_ssz_bool.h"
+#include "include/cpp_ssz_uint.h"
+#include "include/cpp_ssz_bytes.h"
+#include "include/cpp_ssz_bytesN.h"
+#include "include/cpp_ssz_list.h"
+#include "include/cpp_ssz_tuple.h"
+#include "include/cpp_ssz_container.h"
+#include "include/cpp_ssz_util.h"
 
 using namespace std;
 using namespace ssz;
 
-#include "test.h"
+#include "include/test.h"
 
 int main()
 {
