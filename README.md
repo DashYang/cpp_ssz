@@ -1,10 +1,10 @@
 # cpp_ssz
-----------------
 [![Build Status](https://travis-ci.org/NAKsir-melody/cpp_ssz.svg?branch=master)](https://travis-ci.org/NAKsir-melody/cpp_ssz)
+----------------
 
-Simple serialization for ethereum (cpp version)
+Simple serialization for ethereum 2.0 (MVP, cpp version)
 
-## SSZ SPEC
+## SSZ SPEC(WIP)
 https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
 
 ### Build
@@ -13,7 +13,7 @@ https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
 3. cmake ../
 4. make
 
-### bool Usage
+### ssz::Bool Usage
 ```
 //encoding
         Bool testval(true);
@@ -22,7 +22,7 @@ https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
         Bool dec;
         dec.from_bytes(enc, little);
 ```
-### bytes Usage
+### ssz::bytes Usage
 ```
 //encoding
         bytes testval("hello");
@@ -31,7 +31,7 @@ https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
         bytes dec;
         dec.from_bytes(enc, little);
 ```
-### bytesN Usage
+### ssz::bytesN Usage
 ```
 // bytes[32, 48, 96]
 //encoding
@@ -43,7 +43,7 @@ https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
         dec.from_bytes(enc, little);
 ```
 
-### uintN Usage
+### ssz::uintN Usage
 ```
 //uint[8, 16, 32, 64, 128, 256]
 //encoding
@@ -56,7 +56,7 @@ https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
         dec.from_bytes(enc, little);
 ```
 
-### list Usage
+### ssz::List Usage
 ```
 //list: ordered variable-length homogenous collection of values
 //encoding
@@ -71,7 +71,7 @@ https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
         List<uint32> dec;
         dec.from_bytes(enc, little);
 ```
-### vector Usage
+### ssz::Vector Usage
 ```
 //vector: ordered fixed-length homogeneous collection of values
 //encoding
@@ -85,8 +85,7 @@ https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
     bytes enc = a.to_bytes(0, little);
 ```
 
-
-### container Usage
+### ssz::container Usage
 ```
 //container: ordered heterogenous collection of values
 //encoding
@@ -97,4 +96,24 @@ https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
     Container<bytes32,uint256> a; 
     a.push_back(std::make_pair(bytes32(b),testval));
     bytes enc = a.to_bytes(0, little);
+```
+
+### Utilize functions Usage
+```
+//pack
+    List<Bool> testval;
+    bytes packed = pack(testval);
+    
+//merkleize
+    List<bytes32> testval;
+    ethash::hash256 roothash = merkleize(testval);
+    bytes result(roothash.bytes,32);
+
+//mix_in_length
+    int8_t data[4] = {0x1,0x2,0x3,0x4};
+    ethash::hash256 root = ethash::keccak256(data, 4);
+    uint256 length;
+
+    ethash::hash256 mix = mix_in_length(root, length);
+    bytes result(mix.bytes,32);
 ```
