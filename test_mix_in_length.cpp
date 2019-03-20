@@ -8,7 +8,7 @@
 #include "include/cpp_ssz_bytes.h"
 #include "include/cpp_ssz_bytesN.h"
 #include "include/cpp_ssz_list.h"
-#include "include/cpp_ssz_tuple.h"
+#include "include/cpp_ssz_vector.h"
 #include "include/cpp_ssz_container.h"
 #include "include/cpp_ssz_util.h"
 

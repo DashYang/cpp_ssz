@@ -11,7 +11,7 @@
 namespace ssz {
 
     template<class T, unsigned int N>
-        class Tuple: private std::array<T, N>
+        class Vector: private std::array<T, N>
     {
         public:
             using std::array<T, N>::size; 
@@ -25,14 +25,14 @@ namespace ssz {
             bytes to_bytes(unsigned int size, byteorder bo);
 
             // operators
-            bool operator==(Tuple<T, N>& b)
+            bool operator==(Vector<T, N>& b)
             {
                 return std::equal(b.begin(), b.end(), this->begin());
             }
     };
 
     template<class T, unsigned int N>
-        void Tuple<T, N>::from_bytes(bytes& data, byteorder bo)
+        void Vector<T, N>::from_bytes(bytes& data, byteorder bo)
         {
             T a;
             bytes b;
@@ -45,7 +45,7 @@ namespace ssz {
         }
 
     template<class T, unsigned int N>
-        bytes Tuple<T, N>::to_bytes(unsigned int size, byteorder bo)
+        bytes Vector<T, N>::to_bytes(unsigned int size, byteorder bo)
         {
 
             bytes temp;

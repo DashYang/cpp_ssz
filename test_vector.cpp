@@ -6,7 +6,7 @@
 #include "include/Common.h"
 #include "include/cpp_ssz_bytes.h"
 #include "include/cpp_ssz_uint.h"
-#include "include/cpp_ssz_tuple.h"
+#include "include/cpp_ssz_vector.h"
 using namespace std;
 using namespace ssz;
 
@@ -15,7 +15,7 @@ using namespace ssz;
 int main()
 {
 // initial values  
-    Tuple<uint256, 3> a;
+    Vector<uint256, 3> a;
     u256 data("0x16b3dfaec148fb1bb2b066f10ec285e7c9bf402ab32aa78a5d38e34566810cd2");
     uint256 testval(data);
     a[0] = testval;
@@ -25,7 +25,7 @@ int main()
     bytes enc = a.to_bytes(0, little);
     print_hex(enc);
 
-    Tuple<uint256, 3> dec;
+    Vector<uint256, 3> dec;
     dec.from_bytes(enc, little);
     bytes re_enc = dec.to_bytes(0, little);
     print_hex(re_enc);

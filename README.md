@@ -1,9 +1,11 @@
 # cpp_ssz
+----------------
 [![Build Status](https://travis-ci.org/NAKsir-melody/cpp_ssz.svg?branch=master)](https://travis-ci.org/NAKsir-melody/cpp_ssz)
+
 Simple serialization for ethereum (cpp version)
 
-### SSZ SPEC
-https://github.com/ethereum/eth2.0-specs/blob/master/specs/simple-serialize.md
+## SSZ SPEC
+https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
 
 ### Build
 1. mkdir build
@@ -69,11 +71,11 @@ https://github.com/ethereum/eth2.0-specs/blob/master/specs/simple-serialize.md
         List<uint32> dec;
         dec.from_bytes(enc, little);
 ```
-### tuple Usage
+### vector Usage
 ```
-//tuple: ordered fixed-length homogeneous collection of values
+//vector: ordered fixed-length homogeneous collection of values
 //encoding
-    Tuple<uint256, 3> a;
+    Vector<uint256, 3> a;
     u256 data("0x16b3dfaec148fb1bb2b066f10ec285e7c9bf402ab32aa78a5d38e34566810cd2");
     uint256 testval(data);
     a[0] = testval;
