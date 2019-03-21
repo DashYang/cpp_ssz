@@ -2,10 +2,17 @@
 [![Build Status](https://travis-ci.org/NAKsir-melody/cpp_ssz.svg?branch=master)](https://travis-ci.org/NAKsir-melody/cpp_ssz)
 ----------------
 
-Simple serialization for ethereum 2.0 (MVP, cpp version)
+This is c++ version simple serialization library to support ethereum 2.0 (MVP, cpp version)
 
 ## SSZ SPEC(WIP)
-https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
+official spec: https://github.com/ethereum/eth2.0-specs/blob/dev/specs/simple-serialize.md
+commit history: https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
+discuss: https://notes.ethereum.org/QF8jgOQbRTWUhK1zoi8D4Q#
+
+## milestones
+1. MVP for most fuctionality (as of now)
+2. match terminology with aleth project (https://github.com/ethereum/aleth)
+2. Integrate to aleth
 
 ### Build
 1. mkdir build
