@@ -9,7 +9,9 @@ official spec: https://github.com/ethereum/eth2.0-specs/blob/dev/specs/simple-se
 
 commit history: https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
 
-discuss: https://notes.ethereum.org/QF8jgOQbRTWUhK1zoi8D4Q#
+discuss1(official): https://notes.ethereum.org/QF8jgOQbRTWUhK1zoi8D4Q#
+
+discuss2(local, cpp): https://hackmd.io/IL-M0meORQm7erZGjzHzkg
 
 ## milestones
 1. MVP for most fuctionality (as of now)
