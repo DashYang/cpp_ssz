@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/NAKsir-melody/cpp_ssz.svg?branch=master)](https://travis-ci.org/NAKsir-melody/cpp_ssz)
 ----------------
 
-This is c++ version simple serialization library to support ethereum 2.0 (MVP, cpp version)
+This is c++ version simple serialization library to support ethereum 2.0 (PoC, cpp version)
 
 ## SSZ SPEC(WIP)
 official spec: https://github.com/ethereum/eth2.0-specs/blob/dev/specs/simple-serialize.md
