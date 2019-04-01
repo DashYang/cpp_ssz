@@ -7,6 +7,8 @@ This is c++ version simple serialization library to support ethereum 2.0 (PoC, 
 ## SSZ SPEC(WIP)
 official spec: https://github.com/ethereum/eth2.0-specs/blob/dev/specs/simple-serialize.md
 
+Phase 0 Sample: https://github.com/ethereum/eth2.0-specs/blob/dev/utils/phase0/minimal_ssz.py
+
 commit history: https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
 
 discuss1(official): https://notes.ethereum.org/QF8jgOQbRTWUhK1zoi8D4Q#
