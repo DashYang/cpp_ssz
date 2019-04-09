@@ -11,9 +11,9 @@ Phase 0 Sample: https://github.com/ethereum/eth2.0-specs/blob/dev/utils/phase0/m
 
 commit history: https://github.com/ethereum/eth2.0-specs/commits/dev/specs/simple-serialize.md
 
-discuss1(official): https://notes.ethereum.org/QF8jgOQbRTWUhK1zoi8D4Q#
+discuss1: https://notes.ethereum.org/QF8jgOQbRTWUhK1zoi8D4Q#
 
-discuss2(local, cpp): https://hackmd.io/IL-M0meORQm7erZGjzHzkg
+discuss2: https://github.com/ethereum/eth2.0-specs/pull/787#issue-261661134
 
 ## milestones
 1. MVP for most fuctionality (as of now)
